@@ -45,9 +45,10 @@ class ToDoListViewController: UITableViewController {
         
         let alert = UIAlertController(title: "Add New Item", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
-            // What happens after user hits
-            self.itemArray.append(textField.text!)
-            self.tableView.reloadData()
+            if textField.text!.count > 0 {
+                self.itemArray.append(textField.text!)
+                self.tableView.reloadData()
+            }
         }
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create New Item"

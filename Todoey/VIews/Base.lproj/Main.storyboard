@@ -17,9 +17,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="7Tg-FW-ifK">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ToDoItemCell" id="OTd-cw-ZS2">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="OTd-cw-ZS2" id="f8H-kY-tQZ">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -29,7 +34,7 @@
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="Hfr-W2-evJ" id="q6E-Hb-feq"/>
-                            <outlet property="delegate" destination="Hfr-W2-evJ" id="wyH-Xq-efW"/>
+                            <outlet property="delegate" destination="Hfr-W2-evJ" id="is7-47-s40"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="ToDoey" id="zQB-XT-3SL">
@@ -40,10 +45,13 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="searchButton" destination="7Tg-FW-ifK" id="gAr-f3-oIY"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YXk-J1-LCt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="944.79999999999995" y="146.17691154422789"/>
+            <point key="canvasLocation" x="753" y="146"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="33B-d0-0CH">

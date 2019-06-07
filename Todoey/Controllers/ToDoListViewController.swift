@@ -16,14 +16,16 @@ class ToDoListViewController : UITableViewController {
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
     var itemArray = [Item]()
+    
+    var selectedCategory : Category? {
+        didSet { loadItems() }
+    }
 
     @IBOutlet weak var searchButton: UISearchBar!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         searchButton.delegate = self
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-        loadItems()
     }
 
     //MARK - Tableview Data Source Methods.
@@ -35,7 +37,7 @@ class ToDoListViewController : UITableViewController {
         let item = itemArray[indexPath.row]
         cell.textLabel!.text = item.title
         cell.accessoryType   = item.done ? .checkmark : .none
-        return cell;
+        return cell
     }
 
     //MARK - Tableview Delegate Methods.
@@ -55,8 +57,9 @@ class ToDoListViewController : UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             if textField.text!.count > 0 {
                 let newItem = Item(context: self.context)
-                newItem.title = textField.text!
-                newItem.done  = false
+                newItem.title           = textField.text!
+                newItem.done            = false
+                newItem.parentCategory  = self.selectedCategory
                 self.itemArray.append(newItem)
                 self.saveItems()
                 self.tableView.reloadData()
@@ -79,7 +82,13 @@ class ToDoListViewController : UITableViewController {
             print("Error saving context - \(error)")
         }
     }
-    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
+    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+        if let additionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate.init(type: .and, subpredicates: [categoryPredicate, additionalPredicate])
+        } else {
+            request.predicate = categoryPredicate
+        }
         do {
             itemArray = try context.fetch(request)
         } catch {

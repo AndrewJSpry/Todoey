@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import SwipeCellKit
 
 
 ///////////////////////////////////////////
@@ -28,7 +29,7 @@ class ToDoListViewController : UITableViewController {
         searchButton.delegate = self
     }
 
-    //MARK - Tableview Data Source Methods.
+    //MARK: - Tableview Data Source Methods.
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items?.count ?? 1
     }
@@ -43,7 +44,7 @@ class ToDoListViewController : UITableViewController {
         return cell
     }
 
-    //MARK - Tableview Delegate Methods.
+    //MARK: - Tableview Delegate Methods.
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let item = items?[indexPath.row] {
             do {
@@ -58,7 +59,7 @@ class ToDoListViewController : UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    //MARK - Add items to list
+    //MARK: - Add items to list
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
 
@@ -87,7 +88,7 @@ class ToDoListViewController : UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    //MARK - Model Data Persistent Storage
+    //MARK: - Model Data Persistent Storage
     func loadItems() {
         items = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
         tableView.reloadData()

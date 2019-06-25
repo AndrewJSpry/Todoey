@@ -8,11 +8,10 @@
 
 import UIKit
 import RealmSwift
-import SwipeCellKit
-
 
 ///////////////////////////////////////////
-class ToDoListViewController : UITableViewController {
+//MARK: To Do List View Controller
+class ToDoListViewController : SwipeTableViewController {
     
     let realm = try! Realm()
 
@@ -26,6 +25,7 @@ class ToDoListViewController : UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.rowHeight = 65.0
         searchButton.delegate = self
     }
 
@@ -33,8 +33,9 @@ class ToDoListViewController : UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items?.count ?? 1
     }
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
         if let item = items?[indexPath.row] {
             cell.textLabel?.text = item.title
             cell.accessoryType   = item.done ? .checkmark : .none
@@ -42,6 +43,19 @@ class ToDoListViewController : UITableViewController {
             cell.textLabel?.text = "No Items"
         }
         return cell
+    }
+    
+    //MARK: - Delete ToDo Item Methods.
+    override func updateModel(at indexPath: IndexPath) {
+        if let itemForDeletion = self.items?[indexPath.row] {
+            do {
+                try self.realm.write {
+                    self.realm.delete(itemForDeletion)
+                }
+            } catch {
+                print("Error deleting Item \(error)")
+            }
+        }
     }
 
     //MARK: - Tableview Delegate Methods.
@@ -59,7 +73,7 @@ class ToDoListViewController : UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    //MARK: - Add items to list
+    //MARK: - Add ToDo Item.  
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
 

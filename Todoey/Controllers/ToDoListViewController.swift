@@ -24,11 +24,32 @@ class ToDoListViewController : SwipeTableViewController {
 
     @IBOutlet weak var searchButton: UISearchBar!
 
+    //MARK: - View Setup and Cleanup Methods.
     override func viewDidLoad() {
         super.viewDidLoad()
+        searchButton.delegate = self
         tableView.rowHeight = 65.0
         tableView.separatorStyle = .none
-        searchButton.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        title  = selectedCategory?.name
+        guard let color = selectedCategory?.color else { fatalError() }
+        updateNaveBar(withColor: color)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        updateNaveBar(withColor: "1D9BF6")
+    }
+    
+    //MARK: - Nav Bar Tint Methods
+    func updateNaveBar(withColor color: String) {
+        guard let navBar      = navigationController?.navigationBar else { fatalError("Navigation Controller Does Not Exist!") }
+        guard let navBarColor = UIColor(hexString: color)           else { fatalError() }
+        navBar.barTintColor = navBarColor
+        navBar.tintColor = ContrastColorOf(navBarColor, returnFlat: true)
+        navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor : ContrastColorOf(navBarColor, returnFlat: true)]
+        searchButton.barTintColor = navBarColor
     }
 
     //MARK: - Tableview Data Source Methods.

@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 ///////////////////////////////////////////
 //MARK: To Do List View Controller
@@ -26,6 +27,7 @@ class ToDoListViewController : SwipeTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = 65.0
+        tableView.separatorStyle = .none
         searchButton.delegate = self
     }
 
@@ -38,6 +40,10 @@ class ToDoListViewController : SwipeTableViewController {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         if let item = items?[indexPath.row] {
             cell.textLabel?.text = item.title
+            if let color = UIColor(hexString: selectedCategory!.color)?.darken(byPercentage: CGFloat(indexPath.row) / CGFloat(items!.count) ) {
+                cell.backgroundColor = color
+                cell.textLabel?.textColor = ContrastColorOf(color, returnFlat: true)
+            }
             cell.accessoryType   = item.done ? .checkmark : .none
         } else {
             cell.textLabel?.text = "No Items"
